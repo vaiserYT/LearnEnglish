@@ -5,50 +5,136 @@
 @layer base {
   body {
     @apply bg-dark-bg text-white antialiased;
+    background-image:
+      radial-gradient(at 40% 20%, rgba(59, 130, 246, 0.05) 0px, transparent 50%),
+      radial-gradient(at 80% 0%, rgba(168, 85, 247, 0.05) 0px, transparent 50%),
+      radial-gradient(at 0% 50%, rgba(236, 72, 153, 0.03) 0px, transparent 50%),
+      radial-gradient(at 80% 50%, rgba(14, 165, 233, 0.05) 0px, transparent 50%);
+    background-attachment: fixed;
   }
 }
 
 @layer components {
   .btn-primary {
-    @apply bg-primary-600 hover:bg-primary-700 text-white font-medium px-4 py-2 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed;
+    @apply relative overflow-hidden bg-gradient-to-r from-primary-600 to-primary-500 hover:from-primary-700 hover:to-primary-600 text-white font-semibold px-6 py-3 rounded-xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-glow transform hover:scale-[1.02] active:scale-[0.98];
+  }
+
+  .btn-primary::before {
+    content: '';
+    @apply absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 translate-x-[-200%] transition-transform duration-500;
+  }
+
+  .btn-primary:hover::before {
+    @apply translate-x-[200%];
   }
 
   .btn-secondary {
-    @apply bg-dark-card hover:bg-dark-hover text-white font-medium px-4 py-2 rounded-lg border border-dark-border transition-colors;
+    @apply bg-dark-card hover:bg-dark-hover text-white font-medium px-4 py-2.5 rounded-xl border border-dark-border hover:border-primary-500/50 transition-all duration-300 shadow-sm hover:shadow-md;
   }
 
   .input {
-    @apply bg-dark-surface border border-dark-border rounded-lg px-4 py-2 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary-600 focus:border-transparent;
+    @apply bg-dark-surface/50 backdrop-blur-sm border border-dark-border rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary-500/50 focus:border-primary-500/50 transition-all duration-300 shadow-inner-glow;
   }
 
   .card {
-    @apply bg-dark-card rounded-xl border border-dark-border p-6;
+    @apply relative bg-gradient-to-br from-dark-card to-dark-surface rounded-2xl border border-dark-border p-6 shadow-xl backdrop-blur-sm overflow-hidden;
+  }
+
+  .card::before {
+    content: '';
+    @apply absolute inset-0 bg-gradient-to-br from-primary-500/5 via-transparent to-accent-purple/5 opacity-0 transition-opacity duration-500;
+  }
+
+  .card:hover::before {
+    @apply opacity-100;
+  }
+
+  .card-interactive {
+    @apply card cursor-pointer transform transition-all duration-300 hover:scale-[1.02] hover:shadow-glow-lg hover:border-primary-500/30;
   }
 
   .message-user {
-    @apply bg-primary-600 text-white rounded-2xl rounded-br-sm px-4 py-3 max-w-[80%] ml-auto;
+    @apply bg-gradient-to-br from-primary-600 to-primary-500 text-white rounded-2xl rounded-br-sm px-5 py-3 max-w-[80%] ml-auto shadow-lg animate-slide-up;
   }
 
   .message-ai {
-    @apply bg-dark-card text-white rounded-2xl rounded-bl-sm px-4 py-3 max-w-[80%] border border-dark-border;
+    @apply bg-gradient-to-br from-dark-card to-dark-surface text-white rounded-2xl rounded-bl-sm px-5 py-3 max-w-[80%] border border-dark-border shadow-lg animate-slide-up;
+  }
+
+  .stat-card {
+    @apply card flex items-center justify-between hover:border-primary-500/30 transition-all duration-300 group;
+  }
+
+  .stat-card-icon {
+    @apply transition-all duration-300 group-hover:scale-110 group-hover:rotate-3;
+  }
+
+  .gradient-text {
+    @apply bg-gradient-to-r from-primary-400 via-accent-purple to-accent-pink bg-clip-text text-transparent;
+  }
+
+  .glass {
+    @apply bg-white/5 backdrop-blur-md border border-white/10;
+  }
+
+  .loading-shimmer {
+    @apply relative overflow-hidden;
+  }
+
+  .loading-shimmer::after {
+    content: '';
+    @apply absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent animate-shimmer;
   }
 }
 
-/* Custom scrollbar */
+/* Custom scrollbar with gradient */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 10px;
+  height: 10px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #1a1a1a;
+  background: #0a0a0a;
+  border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #333333;
-  border-radius: 4px;
+  background: linear-gradient(180deg, #0284c7 0%, #0369a1 100%);
+  border-radius: 10px;
+  border: 2px solid #0a0a0a;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #444444;
+  background: linear-gradient(180deg, #0369a1 0%, #075985 100%);
+}
+
+/* Smooth scroll */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Selection */
+::selection {
+  background: rgba(14, 165, 233, 0.3);
+  color: white;
+}
+
+/* Floating animation for decorative elements */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+/* Glow pulse animation */
+@keyframes glow-pulse {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(14, 165, 233, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 40px rgba(14, 165, 233, 0.6);
+  }
 }
